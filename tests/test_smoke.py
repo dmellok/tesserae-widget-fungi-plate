@@ -212,7 +212,10 @@ def test_query_windows_and_sources():
     assert err is None and q["month"] == "10" and "d1" not in q
     assert q["lat"] == "-37.8100" and q["radius"] == "15"
     assert q["iconic_taxa"] == "Fungi" and q["quality_grade"] == "research"
-    assert q["photo_license"].startswith("cc0,cc-by")
+    assert q["photo_license"] == "cc0,cc-by,cc-by-nc,cc-by-sa,cc-by-nc-sa"
+    assert "nd" not in q["photo_license"], (
+        "NoDerivatives photos may not be painted from"
+    )
     q, _ = server.query({**MELBOURNE, "window": "30"}, today)
     assert q["d1"] == "2026-09-28" and "month" not in q
     q, _ = server.query({**MELBOURNE, "window": "90"}, today)

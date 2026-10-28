@@ -49,7 +49,9 @@ VERSION = "0.1.0"
 USER_AGENT = f"tesserae/{WIDGET}/{VERSION} (+https://github.com/dmellok/tesserae-widget-{WIDGET.replace('_', '-')})"
 
 INAT = "https://api.inaturalist.org/v1"
-LICENCES = "cc0,cc-by,cc-by-nc,cc-by-sa,cc-by-nc-sa,cc-by-nd,cc-by-nc-nd"
+# No NoDerivatives licences: a painting made from a photograph is a derivative
+# work, which CC BY-ND and CC BY-NC-ND forbid, so those photos are left out.
+LICENCES = "cc0,cc-by,cc-by-nc,cc-by-sa,cc-by-nc-sa"
 CACHE_S = 6 * 3600
 HTTP_TIMEOUT_S = 25.0
 IMG_MAX_BYTES = 8_000_000

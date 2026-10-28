@@ -30,11 +30,13 @@ italics and how many records.
 [iNaturalist](https://www.inaturalist.org) observations through its public
 API: research grade only (the community agrees on the species), fungi only,
 with photographs, and only observations whose photographs carry a Creative
-Commons licence (CC0, CC BY, CC BY-NC, CC BY-SA, CC BY-NC-SA, CC BY-ND or
-CC BY-NC-ND), so every picture the plate shows or paints from may be reused
-with credit. The species are grouped and ranked by the number of such
-observations; a species whose only records have unlicensed photos is not on
-the plate. Each species carries its most faved observation's photo, who took
+Commons licence that allows derivative works (CC0, CC BY, CC BY-NC, CC BY-SA
+or CC BY-NC-SA), so every picture the plate shows or paints from may be
+reused with credit. Photos under CC BY-ND or CC BY-NC-ND are left out: an AI
+painting made from a photo is a derivative work, which the NoDerivatives
+licences forbid. The species are grouped and ranked by the number of such
+observations; a species whose only records have unlicensed or ND-licensed
+photos is not on the plate. Each species carries its most faved observation's photo, who took
 it and the licence, and the day it was last seen.
 
 The default window, **This month**, is the calendar month in every year
