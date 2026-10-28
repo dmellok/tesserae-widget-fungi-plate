@@ -262,7 +262,7 @@
 .size-sm .fp-frame { padding: 1.4cqmin 2cqmin 1cqmin; }
 .size-sm .fp-grid { padding: 0.4cqmin 0 0; gap: 1cqmin 3cqmin; }
 .size-sm .fp-num { display: none; }
-.size-sm .fp-name { font-size: clamp(11px, 3.4cqmin, 16px); white-space: nowrap; text-overflow: ellipsis; display: block; }
+.size-sm .fp-name { font-size: clamp(11px, 3.4cqmin, 16px); line-height: 1.1; }
 .size-sm .fp-title { font-size: clamp(13px, 5.4cqmin, 22px); }
 
 .size-lg .fp-foot { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }

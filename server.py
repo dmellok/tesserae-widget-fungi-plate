@@ -468,13 +468,39 @@ def photo_uri(url: str, data_dir: Path, px: int, levels: str) -> str:
 
 WHITE_FROM = 228  # a channel value this high is taken as the paper
 TRIM_PAD = 0.03  # of the longer side, kept round the subject
+# An ink drawing has no colour of its own, so any light, unsaturated wash that
+# touches the edge of the sheet is a ground the model kept from the photo, not
+# the drawing: it is taken as paper down to this grey.
+INK_GROUND_FROM = 150
+INK_GROUND_SAT = 40
+LOOSE_STYLES = ("ink",)
 
 
-def trim_painting(raw: bytes) -> bytes:
+def _ground_from_edges(im: Any, lum_from: int, sat_max: int) -> Any:
+    """A mask (255 where paper) of the light, unsaturated pixels joined to
+    the edge of the sheet, found by flooding in from a border."""
+    from PIL import Image, ImageChops, ImageDraw
+
+    r, g, b = im.split()
+    lo = ImageChops.lighter(ImageChops.lighter(r, g), b)
+    hi = ImageChops.darker(ImageChops.darker(r, g), b)
+    sat = ImageChops.subtract(lo, hi)
+    light = im.convert("L").point(lambda v: 255 if v >= lum_from else 0)
+    grey = sat.point(lambda v: 255 if v <= sat_max else 0)
+    cand = ImageChops.multiply(light, grey)
+    framed = Image.new("L", (im.width + 2, im.height + 2), 255)
+    framed.paste(cand, (1, 1))
+    ImageDraw.floodfill(framed, (0, 0), 128, thresh=0)
+    filled = framed.crop((1, 1, im.width + 1, im.height + 1))
+    return filled.point(lambda v: 255 if v == 128 else 0)
+
+
+def trim_painting(raw: bytes, loose: bool = False) -> bytes:
     """A painting cropped to its subject with its ground made pure white, so
     on the plate it multiplies into the paper without a visible rectangle and
-    the fungus takes the room its slot allows. A PNG; empty when it cannot be
-    done."""
+    the fungus takes the room its slot allows. ``loose`` (ink drawings) also
+    takes a light grey wash joined to the sheet's edge as paper. A PNG; empty
+    when it cannot be done."""
     try:
         from PIL import Image, ImageChops, ImageOps
     except ImportError:
@@ -491,6 +517,10 @@ def trim_painting(raw: bytes) -> bytes:
     paper = ImageChops.multiply(
         ImageChops.multiply(r.point(white), g.point(white)), b.point(white)
     )
+    if loose:
+        paper = ImageChops.lighter(
+            paper, _ground_from_edges(im, INK_GROUND_FROM, INK_GROUND_SAT)
+        )
     box = ImageChops.invert(paper).getbbox()
     if not box:
         return b""
@@ -520,7 +550,8 @@ def trimmed_variant(art: Any, key: str) -> str:
     if none.exists():
         return ""
     got = art.picture(key)
-    data = trim_painting(got[0]) if got else b""
+    style = str(got[1].get("style") or "") if got else ""
+    data = trim_painting(got[0], loose=style in LOOSE_STYLES) if got else b""
     with contextlib.suppress(OSError):
         if data:
             done.write_bytes(data)

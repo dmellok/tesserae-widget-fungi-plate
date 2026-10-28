@@ -249,6 +249,40 @@ def test_painting_keys_and_prompt():
     assert chr(0x2014) not in p
 
 
+def _smudged(ink: bool) -> bytes:
+    """A white sheet with a dark line in the middle and a soft grey wash in
+    the bottom left corner, joined to the edge, as a kept ground looks."""
+    im = Image.new("RGB", (300, 400), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    for i in range(0, 120, 2):
+        v = 160 + i // 2
+        d.rectangle((0, 280 + i, 120 - i, 400), fill=(v, v, v))
+    d.rectangle((140, 150, 200, 250), fill=(20, 20, 20) if ink else (200, 40, 30))
+    d.rectangle(
+        (150, 160, 190, 240), fill=(200, 200, 200)
+    )  # a light tone enclosed by the line
+    buf = io.BytesIO()
+    im.save(buf, "PNG")
+    return buf.getvalue()
+
+
+def test_trim_whitens_the_ground_and_crops_to_the_subject():
+    out = Image.open(io.BytesIO(server.trim_painting(_smudged(False))))
+    assert out.width < 300 and out.height < 400
+    # a strict trim keeps the grey wash (it may be a pale colour) and so the crop reaches it
+    assert out.getpixel((2, out.height - 2)) != (255, 255, 255)
+    out = Image.open(io.BytesIO(server.trim_painting(_smudged(True), loose=True)))
+    # the loose trim takes the wash as paper: the crop holds the line and its tone only
+    assert out.width < 100 and out.height < 140
+    assert out.getpixel((0, out.height - 1)) == (255, 255, 255)
+    assert (20, 20, 20) in [
+        out.getpixel((x, out.height // 2)) for x in range(out.width)
+    ]
+    assert (200, 200, 200) in [
+        out.getpixel((x, out.height // 2 - 10)) for x in range(out.width)
+    ]
+
+
 # ----- fetch ----------------------------------------------------------
 
 

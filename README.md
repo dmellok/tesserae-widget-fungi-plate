@@ -65,7 +65,8 @@ gouache field guide. The prompt asks for the whole fruiting body in the form
 the photo shows (cap and stem, bracket, cup, coral, puffball or crust),
 standing on nothing, with a small cross-section of the same fungus beside it,
 on plain white paper and nothing else. Each painting is trimmed to its subject
-and laid on the paper, and credited "AI painting (Nano Banana on fal.ai) from
+and laid on the paper (an ink drawing also sheds any light grey wash the
+model kept from the photograph), and credited "AI painting (Nano Banana on fal.ai) from
 a photo by <user> (<licence>)".
 
 Paintings go through Tesserae's own picture store (`app.artwork`, Tesserae
@@ -102,7 +103,7 @@ one or two and the title only. Type and rules scale with the cell.
 
 ![A small card](screenshots/extra-6.png)
 
-*A 380x240 card: two species and the title.*
+*A 380x240 card: two species and the title; a long name wraps to a second line.*
 
 ## Panels
 
