@@ -1,0 +1,270 @@
+/* fungi_plate: a printed plate. The paper is the cell; the type is the page
+   font with a serif stack for the plate title, the plate number and the key,
+   the way a nineteenth-century plate sets its display lines. Every size is a
+   clamp from the cell's short side, so the same page holds from a small card
+   to a 13.3" portrait panel. */
+
+:host { display: block; height: 100%; }
+
+.fp {
+  --ink: #2a2116;
+  --rule: #2a2116;
+  --soft: rgba(42, 33, 22, 0.62);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  --sans: var(--font-family, inherit);
+  --frame: 2px;
+  container-type: size;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2cqmin;
+  padding: 3.2cqmin 3.6cqmin 2.4cqmin;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+/* Panels without colour: pure black ink and heavier rules, so nothing
+   dithers into grey. */
+.lv-gray16, .lv-gray4, .lv-mono { --ink: #000; --rule: #000; --soft: rgba(0, 0, 0, 0.7); }
+.lv-mono { --frame: 3px; --soft: #000; }
+.lv-mono .fp-sub, .lv-mono .fp-key, .lv-mono .fp-foot, .lv-mono .fp-bar { -webkit-text-stroke: 0.25px currentColor; }
+
+/* ---- the title line --------------------------------------------------- */
+
+.fp-title {
+  flex: 0 0 auto;
+  text-align: center;
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(14px, 4.4cqmin, 46px);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 0.4cqmin;
+}
+
+/* ---- the plate frame -------------------------------------------------- */
+
+.fp-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: var(--frame) solid var(--rule);
+  padding: 1.2cqmin 2cqmin 1cqmin;
+  box-sizing: border-box;
+}
+
+.fp-sub {
+  flex: 0 0 auto;
+  text-align: center;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(11px, 1.9cqmin, 18px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 0.9cqmin;
+  border-bottom: var(--frame) solid var(--rule);
+}
+
+.fp-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows, 2), minmax(0, 1fr));
+  gap: 1.2cqmin 2cqmin;
+  padding: 1.4cqmin 0 0.8cqmin;
+}
+
+.fp-slot, .fp-box {
+  margin: 0;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fp-pic {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fp-img { height: 100%; max-width: 100%; display: flex; align-items: center; justify-content: center; }
+.fp-pic img { display: block; max-width: 100%; max-height: 100%; }
+
+/* A painting on white paper sits on the cream by multiplying into it, so
+   the page reads as printed rather than pasted on. */
+.fp-paint img { object-fit: contain; mix-blend-mode: multiply; }
+
+/* A photograph in a soft oval, a little taller than wide, as a plate of
+   mounted photographs would have it. */
+.fp-photo .fp-img { aspect-ratio: 4 / 5; }
+.fp-photo img { width: 100%; height: 100%; object-fit: cover; clip-path: ellipse(47% 48% at 50% 50%); }
+
+.fp-none { color: var(--soft); font-size: clamp(24px, 9cqmin, 90px); }
+
+.fp-cap {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding-top: 0.6cqmin;
+  line-height: 1.15;
+}
+.fp-num {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: clamp(13px, 2.9cqmin, 30px);
+}
+.fp-name {
+  font-family: var(--serif);
+  font-variant-caps: small-caps;
+  font-weight: 700;
+  font-size: clamp(11px, 2.2cqmin, 22px);
+  letter-spacing: 0.06em;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.fp-latin { font-style: italic; font-variant-caps: normal; letter-spacing: 0; }
+
+.fp-key {
+  flex: 0 0 auto;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(11px, 2cqmin, 20px);
+  letter-spacing: 0.01em;
+  text-align: center;
+  padding-top: 0.8cqmin;
+  border-top: var(--frame) solid var(--rule);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* ---- ruled boxes ------------------------------------------------------ */
+
+.fp-sub-boxes { border-bottom: 0; padding-bottom: 0.2cqmin; color: var(--soft); }
+.fp-grid-boxes { gap: 2cqmin 2.4cqmin; padding-top: 0.6cqmin; }
+.fp-box {
+  border: var(--frame) solid var(--rule);
+  box-sizing: border-box;
+  padding: 1.2cqmin 1.2cqmin 0;
+}
+.fp-bar {
+  flex: 0 0 auto;
+  width: calc(100% + 2.4cqmin);
+  margin: 1cqmin -1.2cqmin 0;
+  border-top: var(--frame) solid var(--rule);
+  padding: 0.6cqmin 1cqmin 0.6cqmin;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: clamp(11px, 2cqmin, 20px);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fp-bar-name { font-variant-caps: small-caps; font-weight: 700; letter-spacing: 0.06em; overflow: hidden; text-overflow: ellipsis; }
+.fp-bar-sub { font-size: 0.88em; overflow: hidden; text-overflow: ellipsis; }
+.fp-bar .fp-latin { font-style: italic; }
+.fp-bar-n { color: var(--soft); }
+
+/* ---- the foot --------------------------------------------------------- */
+
+.fp-foot {
+  flex: 0 0 auto;
+  font-family: var(--sans);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(11px, 1.5cqmin, 14px);
+  color: var(--soft);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 0.2cqmin;
+}
+
+/* ---- empty and error -------------------------------------------------- */
+
+.fp-frame-empty .fp-sub { border-bottom: 0; }
+.fp-empty {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6cqmin;
+  padding: 2cqmin 6cqmin;
+  text-align: center;
+}
+.fp-empty i { font-size: clamp(28px, 12cqmin, 110px); color: var(--soft); }
+.fp-empty-t {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(12px, 3cqmin, 30px);
+  line-height: 1.25;
+}
+
+.fp-err {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 3cqmin;
+  padding: 2cqmin 4cqmin;
+}
+.fp-err i { font-size: clamp(28px, 12cqmin, 96px); flex: 0 0 auto; }
+.fp-err-t {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(11px, 2.4cqmin, 18px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.fp-err-m {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(13px, 4cqmin, 34px);
+  line-height: 1.2;
+  margin-top: 0.6cqmin;
+}
+
+/* ---- sizes ------------------------------------------------------------ */
+
+.size-sm { padding: 2.4cqmin 3cqmin 2cqmin; gap: 1cqmin; }
+.size-sm .fp-sub, .size-sm .fp-key, .size-sm .fp-foot, .size-sm .fp-bar-sub { display: none; }
+.size-sm .fp-frame { padding: 1.4cqmin 2cqmin 1cqmin; }
+.size-sm .fp-grid { padding: 0.4cqmin 0 0; gap: 1cqmin 3cqmin; }
+.size-sm .fp-num { display: none; }
+.size-sm .fp-name { font-size: clamp(11px, 3.4cqmin, 16px); white-space: nowrap; text-overflow: ellipsis; display: block; }
+.size-sm .fp-title { font-size: clamp(13px, 5.4cqmin, 22px); }
+
+.size-lg .fp-foot { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.size-md .fp-sub { letter-spacing: 0.1em; }
+.size-md .fp-foot { font-size: 11px; }

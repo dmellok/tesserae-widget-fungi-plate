@@ -1,0 +1,344 @@
+{
+  "tesserae_compat": "1.x",
+  "tesserae_min": "0.463.0",
+  "name": "Fungi Plate",
+  "version": "0.1.0",
+  "kind": "widget",
+  "description": "The fungi recorded round the panel this month, as a numbered mycological plate: each species standing with a small cross-section beside it, a plate number from the month, and a key at the foot. Research-grade iNaturalist observations with openly licensed photographs; pictures are the photographs, or AI paintings made from them through fal.ai.",
+  "icon": "ph-flower-lotus",
+  "category": "art",
+  "supports": {
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ]
+  },
+  "requires": [
+    "network:*"
+  ],
+  "render": {
+    "needs_network": true,
+    "warm_ahead_s": 150
+  },
+  "cell_options": [
+    {
+      "name": "location",
+      "type": "location_search",
+      "label": "Place",
+      "default": "",
+      "help": "Where to look for fungi. Falls back to the app-level location in Settings when empty.",
+      "show_if": {
+        "source": "place"
+      }
+    },
+    {
+      "name": "radius_km",
+      "type": "select",
+      "label": "Within",
+      "default": "15",
+      "help": "How far round the place to look.",
+      "show_if": {
+        "source": "place"
+      },
+      "choices": [
+        {
+          "value": "2",
+          "label": "2 km"
+        },
+        {
+          "value": "5",
+          "label": "5 km"
+        },
+        {
+          "value": "10",
+          "label": "10 km"
+        },
+        {
+          "value": "15",
+          "label": "15 km"
+        },
+        {
+          "value": "25",
+          "label": "25 km"
+        },
+        {
+          "value": "50",
+          "label": "50 km"
+        }
+      ]
+    },
+    {
+      "name": "window",
+      "type": "select",
+      "label": "Window",
+      "default": "month",
+      "help": "This month is the calendar month in every year iNaturalist has, so the plate is seasonal: what fruits here in October. The rolling windows count back from to-day.",
+      "choices": [
+        {
+          "value": "month",
+          "label": "This month"
+        },
+        {
+          "value": "30",
+          "label": "Last 30 days"
+        },
+        {
+          "value": "90",
+          "label": "Last 90 days"
+        }
+      ]
+    },
+    {
+      "name": "count",
+      "type": "select",
+      "label": "How many",
+      "default": "6",
+      "help": "Species on the plate, the most recorded first. A small cell shows one or two whatever is set.",
+      "choices": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        },
+        {
+          "value": "8",
+          "label": "8"
+        },
+        {
+          "value": "9",
+          "label": "9"
+        }
+      ]
+    },
+    {
+      "name": "layout",
+      "type": "select",
+      "label": "Layout",
+      "default": "plate",
+      "help": "The numbered plate is one ruled frame with the species in a grid, numbered, and a key at the foot. Ruled boxes gives each species a box of its own with a caption bar: the name, the Latin and how many records.",
+      "choices": [
+        {
+          "value": "plate",
+          "label": "Numbered plate"
+        },
+        {
+          "value": "boxes",
+          "label": "Ruled boxes"
+        }
+      ]
+    },
+    {
+      "name": "pictures",
+      "type": "select",
+      "label": "Pictures",
+      "default": "photos",
+      "help": "Photographs cost nothing: each species' best openly licensed photo on iNaturalist, in a soft oval, with its credit. AI paintings paint each species once from that photo, in the style below, standing on white paper with a cross-section beside it, at about US$0.04 a species; the plate shows the photos until each painting lands. Needs a fal.ai key in this widget's settings or under Settings.",
+      "choices": [
+        {
+          "value": "photos",
+          "label": "Photographs"
+        },
+        {
+          "value": "gen",
+          "label": "AI paintings"
+        }
+      ]
+    },
+    {
+      "name": "style",
+      "type": "select",
+      "label": "Style",
+      "default": "engraving",
+      "help": "The style every painting is made in. Each species is painted once per style and kept, so changing it paints the plate again. Ink line drawing suits a black and white panel.",
+      "show_if": {
+        "pictures": "gen"
+      },
+      "choices": [
+        {
+          "value": "engraving",
+          "label": "Hand-coloured engraving"
+        },
+        {
+          "value": "potter",
+          "label": "Watercolour after Beatrix Potter"
+        },
+        {
+          "value": "woodblock",
+          "label": "Woodblock print"
+        },
+        {
+          "value": "ink",
+          "label": "Ink line drawing"
+        },
+        {
+          "value": "gouache",
+          "label": "Gouache field guide"
+        }
+      ]
+    },
+    {
+      "name": "paper",
+      "type": "select",
+      "label": "Paper",
+      "default": "cream",
+      "choices": [
+        {
+          "value": "cream",
+          "label": "Cream"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "aged",
+          "label": "Aged"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "type": "select",
+      "label": "Source",
+      "default": "place",
+      "help": "The fungi round the place, or one iNaturalist user's own records, anywhere.",
+      "advanced": true,
+      "choices": [
+        {
+          "value": "place",
+          "label": "Round the place"
+        },
+        {
+          "value": "user",
+          "label": "An iNaturalist user"
+        }
+      ]
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "label": "iNaturalist username",
+      "default": "",
+      "help": "Whose records to show. Set it to your own to see what you have catalogued.",
+      "show_if": {
+        "source": "user"
+      },
+      "advanced": true
+    },
+    {
+      "name": "model",
+      "type": "select",
+      "label": "Model",
+      "default": "nano_banana",
+      "help": "All on fal.ai, all painting from a photo of the species. Nano Banana is faithful and cheap; Nano Banana Pro follows an unusual instruction better and draws finer detail; FLUX.1 Kontext Pro adheres most strongly to a style; GPT Image 2 is a good likeness with a narrower range; Seedream 4 is the budget one. Each model keeps its own paintings, so switching never throws any away.",
+      "show_if": {
+        "pictures": "gen"
+      },
+      "advanced": true,
+      "choices": [
+        {
+          "value": "nano_banana",
+          "label": "Nano Banana (about US$0.04)"
+        },
+        {
+          "value": "nano_banana_pro",
+          "label": "Nano Banana Pro (about US$0.15)"
+        },
+        {
+          "value": "flux_kontext",
+          "label": "FLUX.1 Kontext Pro (about US$0.04)"
+        },
+        {
+          "value": "gpt_image",
+          "label": "GPT Image 2 (about US$0.05)"
+        },
+        {
+          "value": "seedream",
+          "label": "Seedream 4 (about US$0.03)"
+        }
+      ]
+    },
+    {
+      "name": "panel",
+      "type": "select",
+      "label": "Panel",
+      "default": "colour",
+      "help": "What the panel can show. Pictures are converted and contrast-stretched to match; on black and white the type is thickened.",
+      "advanced": true,
+      "choices": [
+        {
+          "value": "colour",
+          "label": "Colour"
+        },
+        {
+          "value": "gray16",
+          "label": "16 greys"
+        },
+        {
+          "value": "gray4",
+          "label": "4 greys"
+        },
+        {
+          "value": "mono",
+          "label": "Black and white"
+        }
+      ]
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Title",
+      "default": "",
+      "help": "Blank is FUNGI OF THE MONTH and the place (or the username).",
+      "advanced": true
+    },
+    {
+      "name": "credits",
+      "type": "boolean",
+      "label": "Credit line",
+      "default": true,
+      "help": "The photographers and licences, and what painted from them, in a line under the plate. The licences ask for it; turn it off only on a cell too small to read it.",
+      "advanced": true
+    }
+  ],
+  "settings": [
+    {
+      "name": "fal_api_key",
+      "type": "string",
+      "label": "fal.ai API key (AI paintings)",
+      "secret": true,
+      "default": "",
+      "help": "With a key the widget can paint each species from its own photograph, at about US$0.04 a painting, once per species and style. Get one at https://fal.ai/dashboard/keys; it is only sent to fal.run. Without one the plate shows photographs. The app-level key under Settings is used when this is blank."
+    },
+    {
+      "name": "gen_daily_usd",
+      "type": "slider",
+      "label": "Painting budget per day",
+      "default": 2,
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "US$",
+      "help": "The most the widget may spend on new paintings in a day, at the models' listed prices (US$2 is about fifty Nano Banana paintings). 0 is no limit. Paintings are kept, so a species in a style only costs once; after a month most of what fruits here is already painted."
+    },
+    {
+      "name": "gen_per_refresh",
+      "type": "number",
+      "label": "New paintings started per preview",
+      "default": 3,
+      "help": "How many new paintings one settled preview in the editor may start (1 to 50). A panel's own render starts what its page needs, within the daily budget."
+    }
+  ]
+}
