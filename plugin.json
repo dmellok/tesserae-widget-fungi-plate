@@ -1,7 +1,7 @@
 {
   "tesserae_compat": "1.x",
   "tesserae_min": "0.463.0",
-  "name": "Fungi Plate",
+  "name": "Picture, Fungi Plate",
   "version": "0.1.0",
   "kind": "widget",
   "description": "The fungi recorded round the panel this month, as a numbered mycological plate: each species standing with a small cross-section beside it, a plate number from the month, and a key at the foot. Research-grade iNaturalist observations with openly licensed photographs; pictures are the photographs, or AI paintings made from them through fal.ai.",

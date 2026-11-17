@@ -37,7 +37,7 @@ def _up_front(o: dict) -> bool:
 
 
 def test_manifest_basics() -> None:
-    assert MANIFEST["name"] == "Fungi Plate"
+    assert MANIFEST["name"] == "Picture, Fungi Plate"
     assert MANIFEST["kind"] == "widget"
     assert MANIFEST["tesserae_compat"] == "1.x"
     assert MANIFEST["tesserae_min"] == "0.463.0"
